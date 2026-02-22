@@ -4,7 +4,7 @@
 ---
 
 ## 🔐 Authentication
-
+This one already exists in the database so it will cause an error
 ### 1. Sign Up
 ```graphql
 mutation {
