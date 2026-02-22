@@ -84,7 +84,7 @@ query {
 
 ```graphql
 query {
-  searchEmployeeById(eid: "YOUR_EMPLOYEE_ID_HERE") {
+  searchEmployeeById(id: "YOUR_EMPLOYEE_ID_HERE") {
     id
     first_name
     last_name
@@ -104,7 +104,7 @@ query {
 ```graphql
 mutation {
   updateEmployee(
-    eid: "YOUR_EMPLOYEE_ID_HERE"
+    id: "YOUR_EMPLOYEE_ID_HERE"
     updateEmployeeInput: {
       designation: "Senior Engineer"
       salary: 95000
@@ -155,7 +155,7 @@ query {
 
 ```graphql
 mutation {
-  deleteEmployee(eid: "YOUR_EMPLOYEE_ID_HERE") {
+  deleteEmployee(id: "YOUR_EMPLOYEE_ID_HERE") {
     success
     message
   }
