@@ -68,6 +68,11 @@ const employeeSchema = new mongoose.Schema({
     versionKey: false
 });
 
+employeeSchema.pre('findOneAndUpdate', function(next) {
+    this.set({ updated_at: new Date() });
+    next();
+});
+
 const Employee = mongoose.model('Employee', employeeSchema);
 
 module.exports = Employee;
