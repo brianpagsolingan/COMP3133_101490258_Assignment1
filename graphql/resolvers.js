@@ -213,10 +213,84 @@ const resolvers = {
                 message: 'Employee added successfully',
                 employee: {id: newEmployee._id, ...newEmployee.toObject()}
             };
-        }
+        },
 
+        updateEmployee: async (_, {id, updateEmployeeInput}) => {
+            const existingEmployee = await Employee.findById(id);
+            if (!existingEmployee) {
+                throw new UserInputError('Employee not found');
+            }
 
+            const{
+                first_name,
+                last_name,
+                email,
+                gender,
+                designation,
+                salary,
+                date_of_joining,
+                department,
+                employee_photo
+            } = updateEmployeeInput;
 
+            if (email) validateEmail(email);
+            if (salary !== undefined) validateSalary(salary);
+
+            // check if email is being updated to an email that already exists
+            if (email && email.toLowerCase() !== existingEmployee.email) {
+                const existingEmail = await Employee.findOne({email: email.toLowerCase()});
+                if (existingEmail) {
+                    throw new UserInputError('Another employee with this email already exists');
+                }
+            }
+            
+            // build update object - only include fields that are provided in the input
+            const updatedData = { updated_at: new Date() };
+            if (first_name) updatedData.first_name = first_name.trim();
+            if (last_name) updatedData.last_name = last_name.trim();
+            if (email) updatedData.email = email.toLowerCase();
+            if (gender) updatedData.gender = gender.trim();
+            if (designation) updatedData.designation = designation.trim();
+            if (salary !== undefined) updatedData.salary = parseFloat(salary);
+            if (date_of_joining) updatedData.date_of_joining = new Date(date_of_joining);
+            if (department) updatedData.department = department.trim();
+            
+            // new photo upload if employee_photo is provided
+            if (employee_photo) {
+                try{
+                    const uploadResult = await uploadtToCloudiinary(employee_photo, 'employees');
+                    updatedData.employee_photo = uploadResult.secure_url;
+                }catch (error) {
+                    throw new UserInputError('Failed to upload employee photo: ' + error.message);
+                }
+            }
+
+            const updatedEmployee = await Employee.findByIdAndUpdate(
+                id,
+                { $set: updatedData },
+                { new: true, runValidators: true }
+            )
+            return {
+                success: true,
+                message: 'Employee updated successfully',
+                employee: {id: updatedEmployee._id, ...updatedEmployee.toObject()}
+            };
+        },
+
+        deleteEmployee: async (_, {id}) => {
+            const existingEmployee = await Employee.findById(id);
+            if (!existingEmployee) {
+                throw new UserInputError('Employee not found');
+            }
+
+            await Employee.findByIdAndDelete(id);
+            return {
+                success: true,
+                message: `Employee "${existingEmployee.first_name} ${existingEmployee.last_name}" deleted successfully `
+            };
     }
+}
         
 };
+
+module.exports = resolvers;
