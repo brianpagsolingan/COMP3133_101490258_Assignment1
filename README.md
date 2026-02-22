@@ -1,9 +1,12 @@
-# COMP 3133 ASSIGNMENT 1 # 
+# COMP3133 - Assignment 1
+### Employee Management System — GraphQL API Testing Queries
 
-** Postman Queries for Testing **
+---
 
-* Sign Up *
+## 🔐 Authentication
 
+### 1. Sign Up
+```graphql
 mutation {
   signup(signupInput: {
     username: "brian.pagsolingan"
@@ -15,9 +18,10 @@ mutation {
     email
   }
 }
+```
 
-* Log in * 
-
+### 2. Log In
+```graphql
 query {
   login(loginInput: {
     username: "brian.pagsolingan"
@@ -28,9 +32,14 @@ query {
     email
   }
 }
+```
 
-* Add Employee
+---
 
+## 👥 Employee Operations
+
+### 3. Add Employee
+```graphql
 mutation {
   addEmployee(addEmployeeInput: {
     first_name: "Old"
@@ -52,9 +61,10 @@ mutation {
     }
   }
 }
+```
 
-* Get All Employees *
-
+### 4. Get All Employees
+```graphql
 query {
   getAllEmployees {
     id
@@ -68,11 +78,13 @@ query {
     updated_at
   }
 }
+```
 
-* Get by ID *
+### 5. Get Employee by ID
 
+```graphql
 query {
-  getEmployeeById(id: "699b87ba7d44b1a6a412ecee") {
+  searchEmployeeById(eid: "YOUR_EMPLOYEE_ID_HERE") {
     id
     first_name
     last_name
@@ -85,12 +97,14 @@ query {
     updated_at
   }
 }
+```
 
-* Update Employee *
+### 6. Update Employee
 
+```graphql
 mutation {
   updateEmployee(
-    id: "699b87ba7d44b1a6a412ecee"
+    eid: "YOUR_EMPLOYEE_ID_HERE"
     updateEmployeeInput: {
       designation: "Senior Engineer"
       salary: 95000
@@ -106,9 +120,12 @@ mutation {
     }
   }
 }
+```
 
-* Search By Designation or Department *
+### 7. Search by Designation or Department
 
+**Search by Department:**
+```graphql
 query {
   searchEmployeeByDesignationOrDepartment(department: "Engineering") {
     id
@@ -118,7 +135,10 @@ query {
     department
   }
 }
+```
 
+**Search by Designation:**
+```graphql
 query {
   searchEmployeeByDesignationOrDepartment(designation: "Senior Engineer") {
     id
@@ -128,12 +148,18 @@ query {
     department
   }
 }
+```
 
-* Delete By ID *
+### 8. Delete Employee
 
+
+```graphql
 mutation {
-  deleteEmployee(id: "699b87ba7d44b1a6a412ecee") {
+  deleteEmployee(eid: "YOUR_EMPLOYEE_ID_HERE") {
     success
     message
   }
 }
+```
+
+---
