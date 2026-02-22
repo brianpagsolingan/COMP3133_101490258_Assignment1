@@ -84,7 +84,7 @@ query {
 
 ```graphql
 query {
-  searchEmployeeById(id: "YOUR_EMPLOYEE_ID_HERE") {
+  getEmployeeById(id: "YOUR_EMPLOYEE_ID_HERE") {
     id
     first_name
     last_name
