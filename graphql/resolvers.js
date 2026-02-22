@@ -60,7 +60,7 @@ const resolvers = {
                 throw new AuthenticationError('Invalid username ');
             }
 
-            const isPasswordValid = await user.isPasswordValid(password);
+            const isPasswordValid = await user.comparePassword(password);
             if (!isPasswordValid) {
                 throw new AuthenticationError('Invalid password');
             }
@@ -74,7 +74,7 @@ const resolvers = {
         },
 
         getAllEmployees: async () => {
-            const employees = (await Employee.find()).sort({created_at: -1});
+            const employees = await Employee.find().sort({created_at: -1});
             return employees.map(employee => ({
                 id: employee._id,
                 first_name: employee.first_name,
@@ -92,7 +92,7 @@ const resolvers = {
             return {id: employee._id, ...employee.toObject()};
         },
 
-        searchEmployeeByDesginationOrDepartment: async (_, {designation, department}) => {
+        searchEmployeeByDesignationOrDepartment: async (_, {designation, department}) => {
             if (!designation && !department) {
                 throw new UserInputError('At least one of designation or department must be provided');
             }
@@ -159,7 +159,7 @@ const resolvers = {
 
         },
 
-        addEmployee: async (_, {employeeInput}) => {
+        addEmployee: async (_, {addEmployeeInput}) => {
             const{
                 first_name,
                 last_name,
@@ -170,7 +170,7 @@ const resolvers = {
                 date_of_joining,
                 department,
                 employee_photo
-            } = employeeInput;
+            } = addEmployeeInput;
 
             if(!first_name || !last_name || !email || !designation || !salary || !date_of_joining || !department){
                 throw new UserInputError('All fields except gender and employee_photo are required');

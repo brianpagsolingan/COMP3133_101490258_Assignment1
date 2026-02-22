@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
-const bcrypt = require('bcrypt');
+const bcryptjs = require('bcryptjs');
 
 const userSchema = new mongoose.Schema({
     username: {
@@ -46,8 +46,8 @@ userSchema.pre('save', async function(next) {
         return next();
     }
     try {
-        const salt = await bcrypt.genSalt(12);
-        this.password = await bcrypt.hash(this.password, salt);
+        const salt = await bcryptjs.genSalt(12);
+        this.password = await bcryptjs.hash(this.password, salt);
         next();
     } catch (error) {
         next(error);
@@ -62,7 +62,7 @@ userSchema.pre('findOneAndUpdate', function(next) {
 
 //method to compare password for login
 userSchema.methods.comparePassword = async function(candidatePassword) {
-    return await bcrypt.compare(candidatePassword, this.password);
+    return await bcryptjs.compare(candidatePassword, this.password);
 };
 
 //find by email or username

@@ -83,9 +83,9 @@ const typeDefs = gql`
         getAllEmployees: [Employee!]!
         getEmployeeById(id: ID!): Employee
 
-        searchEmployeesByDepartment(
-        department: String!
-        designation: String!
+        searchEmployeeByDesignationOrDepartment(
+        department: String
+        designation: String
         ): [Employee!]!
 
     }
