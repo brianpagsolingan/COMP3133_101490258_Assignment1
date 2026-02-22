@@ -3,6 +3,7 @@ const {GraphQLScalarType, Kind} = require('graphql');
 const User = require('../models/User');
 const Employee = require('../models/Employee');
 const validator = require('validator');
+const {uploadtToCloudiinary} = require('../config/cloudinary');
 
 
 // Custom scalar type for Date
@@ -80,6 +81,11 @@ const resolvers = {
                 first_name: employee.first_name,
                 last_name: employee.last_name,
                 email: employee.email,
+                designation: employee.designation,
+                salary: employee.salary,
+                date_of_joining: employee.date_of_joining,
+                department: employee.department,
+                employee_photo: employee.employee_photo,
                 created_at: employee.created_at,
                 updated_at: employee.updated_at
             }));
